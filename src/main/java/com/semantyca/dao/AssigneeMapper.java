@@ -1,0 +1,33 @@
+package com.semantyca.dao;
+
+import com.semantyca.model.Assignee;
+import com.semantyca.model.user.User;
+import org.jdbi.v3.core.statement.StatementContext;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class AssigneeMapper extends AbstractMapper<Assignee> {
+
+    private IUserDAO userDAO;
+
+    public AssigneeMapper() {
+        super();
+    //    userDAO = ApplicationContextKeeper.getContext().getBean(IUserDAO.class);
+    }
+
+    @Override
+    public Assignee map(ResultSet rs, int columnNumber, StatementContext ctx) throws SQLException {
+        Assignee entity = new Assignee();
+        transferIdUUID(entity, rs);
+        transferCommonData(entity, rs);
+        entity.setName(rs.getString("name"));
+        entity.setRank(rs.getInt("rank"));
+        User user = userDAO.findById(rs.getInt("user_id"));
+        if (user != null) {
+            entity.setUser(user);
+        }
+        return entity;
+    }
+
+}

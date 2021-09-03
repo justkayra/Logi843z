@@ -1,0 +1,40 @@
+package com.semantyca.model;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.semantyca.model.embedded.RLSEntry;
+import com.semantyca.model.exception.RLSIsNotNormalized;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class SecureDataEntity<T> extends DataEntity<T> {
+
+    private Map<Integer, RLSEntry> readers = new HashMap<>();
+
+    @JsonGetter("acl")
+    public Collection<RLSEntry> getReaders() {
+        return readers.values();
+    }
+
+    @JsonIgnore
+    public SecureDataEntity addReader(RLSEntry reader){
+        readers.put(reader.getReader(), reader);
+        return this;
+    }
+
+
+    @JsonIgnore
+    public RLSEntry getRLS(int reader) throws RLSIsNotNormalized {
+        if (readers != null) {
+            RLSEntry entry = readers.get(reader);
+            if (entry == null) {
+                entry = new RLSEntry();
+            }
+            return entry;
+        } else {
+            throw new RLSIsNotNormalized();
+        }
+    }
+}
