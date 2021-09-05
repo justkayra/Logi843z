@@ -31,6 +31,12 @@ public class DatabaseService {
         generator = new EntityGenerator(userRepository, assigneeRepository);
     }
 
+
+    public List<User> getUsers() {
+        return userRepository.findAllUnrestricted(100, 0);
+    }
+
+
     public boolean populateUsers() {
         try {
             generator.generateUsers().forEach(user -> {
@@ -75,4 +81,5 @@ public class DatabaseService {
         }
         return true;
     }
+
 }
