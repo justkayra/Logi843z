@@ -6,14 +6,15 @@ import org.jdbi.v3.core.statement.StatementContext;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
-public class AssigneeMapper extends AbstractMapper<Assignee> {
+public class AssigneesMapper extends AbstractMapper<Assignee> {
 
-    private IUserDAO userDAO;
+    UserRepository userRepository;
 
-    public AssigneeMapper() {
+    public AssigneesMapper(UserRepository userRepository) {
         super();
-    //    userDAO = ApplicationContextKeeper.getContext().getBean(IUserDAO.class);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -23,11 +24,10 @@ public class AssigneeMapper extends AbstractMapper<Assignee> {
         transferCommonData(entity, rs);
         entity.setName(rs.getString("name"));
         entity.setRank(rs.getInt("rank"));
-        User user = userDAO.findById(rs.getInt("user_id"));
-        if (user != null) {
-            entity.setUser(user);
+        Optional<User> userOptional = userRepository.findById(rs.getInt("user_id"));
+        if (userOptional.isEmpty()) {
+            entity.setUser(userOptional.get());
         }
         return entity;
     }
-
 }

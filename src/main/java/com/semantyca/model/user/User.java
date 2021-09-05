@@ -26,13 +26,11 @@ public class User extends DataEntity<Integer> implements IUser {
         this.login = login;
     }
 
-    @JsonIgnore
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
 
     @Override
-    @JsonIgnore
     public String getPwd() {
         return pwd;
     }
@@ -69,13 +67,6 @@ public class User extends DataEntity<Integer> implements IUser {
     public List<String> getRoles() {
         return roles;
     }
-
-    @Json
-    @JsonIgnore
-    public List<String> getRolesAsJSON() {
-        return roles;
-    }
-
 
     public void setRoles(List<String> roles) {
         this.roles = roles;

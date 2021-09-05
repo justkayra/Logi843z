@@ -1,7 +1,5 @@
 package com.semantyca.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -43,7 +41,6 @@ public abstract class DataEntity<K> implements IDataEntity<K> {
     }
 
     @Override
-    @JsonIgnore
     public int getAuthor() {
         return author;
     }
@@ -53,7 +50,6 @@ public abstract class DataEntity<K> implements IDataEntity<K> {
         return regDate;
     }
 
-    @JsonIgnore
     public Timestamp getRegDateTimestamp() {
         return new Timestamp(regDate.toInstant().getEpochSecond() * 1000L);
     }
@@ -70,7 +66,7 @@ public abstract class DataEntity<K> implements IDataEntity<K> {
         return lastModifiedDate;
     }
 
-    @JsonIgnore
+
     public int getLastModifier() {
         return lastModifier;
     }
